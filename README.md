@@ -4,7 +4,7 @@ ACard Studio is a Scratch-inspired block editor prototype for M5Stack Cardputer 
 
 ## Current editor features
 - Broad Scratch 3-style core block catalogue: Motion, Looks, Sound, Events, Control, Sensing, Operators, Variables, Lists and My Blocks.
-- Extension catalogues for Music, Pen, Video Sensing, Face Sensing, Text to Speech, Translate, Makey Makey, micro:bit, Go Direct, LEGO EV3, LEGO BOOST and WeDo 2.0.
+- Scratch's built-in extension catalogues: Music, Pen, Video Sensing, Face Sensing, Text to Speech and Translate. Third-party hardware extensions have been removed.
 - Cardputer-specific block catalogue for display drawing, keyboard, speaker, microphone, battery, IMU, Wi-Fi, BLE, microSD, IR and device information.
 - Multiple sprites, built-in emoji costumes, sprite selection and costume selection.
 - Ordered per-sprite scripts, editable block values, block reorder and remove.
