@@ -1,26 +1,21 @@
 # ACard Studio
 
-ACard Studio is a visual block-coding workspace for creating projects for the M5Stack Cardputer ADV and AIR OS.
+ACard Studio is a Scratch-inspired block editor prototype for M5Stack Cardputer ADV and AIR OS.
 
-## Current preview
+## Current editor features
+- Broad Scratch 3-style core block catalogue: Motion, Looks, Sound, Events, Control, Sensing, Operators, Variables, Lists and My Blocks.
+- Extension catalogues for Music, Pen, Video Sensing, Face Sensing, Text to Speech, Translate, Makey Makey, micro:bit, Go Direct, LEGO EV3, LEGO BOOST and WeDo 2.0.
+- Cardputer-specific block catalogue for display drawing, keyboard, speaker, microphone, battery, IMU, Wi-Fi, BLE, microSD, IR and device information.
+- Multiple sprites, built-in emoji costumes, sprite selection and costume selection.
+- Ordered per-sprite scripts, editable block values, block reorder and remove.
+- Keyboard-controlled on-screen pointer: arrow keys move; Enter selects; Shift + arrows move faster.
+- Import/export version 2 .airproj files; old prototype files with a blocks array can be imported.
+- Lightweight stage preview and a small set of executable preview actions (movement, visibility, size, speech/display and costumes).
 
-This first web preview includes:
-- Category navigation for Scratch-inspired blocks and Cardputer ADV hardware blocks
-- Click-to-add block workspace with block removal
-- Project name editing
-- Import/export of editable `.airproj` JSON project files
-- A small Cardputer-shaped visual preview
+## Use
+Open `index.html` in a modern browser or host the folder on a static web server.
 
-## Run locally
+## Important compatibility notes
+This is an expanding Scratch-style editor, not the official Scratch 3 runtime. Blocks are catalogued for editing, but not every block has an execution implementation yet. Camera/face sensing, Makey Makey, micro:bit, Go Direct and LEGO blocks require their matching external hardware and are not available on the Cardputer itself. Cardputer hardware blocks need a native AIR OS/Cardputer runtime before they can control the physical device. The web preview is a simulator, not a connection to the Cardputer.
 
-Open `index.html` in a modern browser, or serve this folder with any static web server.
-
-## Roadmap
-
-- Drag-and-drop block connections and a proper block execution engine
-- Full Scratch-style block set, variables, lists, sprites, costumes and sounds
-- Cardputer ADV hardware APIs and on-device runtime
-- PC, Cardputer keyboard-operated and Android editors
-- Project folders, asset management, ZIP import/export and installable `.airapp` packages
-
-This is an early prototype. The preview is not yet a full Scratch-compatible runtime and hardware blocks are currently visual placeholders.
+The Cardputer has no touchscreen. Its editor interaction is designed around a keyboard cursor and select key. The current website preview uses arrow keys and Enter to demonstrate that control model.
