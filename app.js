@@ -1,0 +1,25 @@
+const categories=[
+{name:"Motion",icon:"↗",color:"#4c9be8",blocks:["move 10 steps","turn ↻ 15 degrees","go to x: 0 y: 0","change x by 10","change y by 10","if on edge, bounce"]},
+{name:"Looks",icon:"◉",color:"#9867d5",blocks:["say Hello! for 2 seconds","think Hmm...","show","hide","change size by 10","switch backdrop"]},
+{name:"Sound",icon:"♫",color:"#c45bc8",blocks:["play sound Meow","start sound Meow","stop all sounds","change volume by -10","set volume to 100%"]},
+{name:"Events",icon:"⚑",color:"#e7a83e",blocks:["when green flag clicked","when key space pressed","when this sprite clicked","broadcast message1"]},
+{name:"Control",icon:"⟳",color:"#e18b42",blocks:["wait 1 seconds","repeat 10","forever","if then","if then else","wait until","stop all"]},
+{name:"Sensing",icon:"◉",color:"#4ebbc1",blocks:["touching mouse-pointer?","key space pressed?","ask What's your name?","answer","timer","reset timer"]},
+{name:"Operators",icon:"◇",color:"#65b96c",blocks:["1 + 1","1 - 1","1 × 1","1 / 1","pick random 1 to 10","join hello world","1 = 1","1 > 1","not"]},
+{name:"Variables",icon:"▤",color:"#e0a34a",blocks:["set score to 0","change score by 1","show variable score","hide variable score"]},
+{name:"Lists",icon:"☷",color:"#d18b48",blocks:["add thing to list","delete 1 of list","insert thing at 1","item 1 of list","length of list"]},
+{name:"My Blocks",icon:"✣",color:"#d66b9c",blocks:["define my block","my block"]},
+{name:"Cardputer",icon:"⌘",color:"#e18b42",blocks:["display text Hello","clear display","draw rectangle","read keyboard input","key pressed?","play tone 440 Hz","read microphone level","read battery %","read accelerometer X","read gyroscope Z","Wi-Fi connected?","scan BLE devices","read file from SD","write file to SD","send IR signal","wait 1 seconds"]}];
+let selected=categories[0],program=[];const $=id=>document.getElementById(id);
+function renderCategories(){ $("categories").innerHTML=categories.map((c,i)=>'<button class="category '+(c===selected?'active':'')+'" data-i="'+i+'"><span class="cat-icon">'+c.icon+'</span>'+c.name+'</button>').join('');document.querySelectorAll('.category').forEach(b=>b.onclick=()=>{selected=categories[+b.dataset.i];renderCategories();renderPalette()})}
+function renderPalette(){$("palette").innerHTML=selected.blocks.map((b,i)=>'<button class="block-option" style="--block-color:'+selected.color+'" data-i="'+i+'">'+b+'<small>Click to add block</small></button>').join('');document.querySelectorAll('.block-option').forEach(b=>b.onclick=()=>{program.push({category:selected.name,text:selected.blocks[+b.dataset.i],color:selected.color});renderWorkspace();$("status").textContent="Added "+selected.blocks[+b.dataset.i]})}
+function renderWorkspace(){$("emptyState").style.display=program.length?'none':'flex';$("workspace").querySelectorAll('.code-block').forEach(n=>n.remove());program.forEach((b,i)=>{const el=document.createElement('div');el.className='code-block';el.style.setProperty('--block-color',b.color);el.innerHTML='<span>'+b.text+'</span><button aria-label="Remove block">×</button>';el.querySelector('button').onclick=()=>{program.splice(i,1);renderWorkspace()};$("workspace").appendChild(el)});$("blockCount").textContent=program.length}
+function saveProject(){return {format:"airproj",version:1,name:$("projectName").value||"Untitled project",target:"cardputer-adv",blocks:program,createdWith:"ACard Studio"}}
+$("exportBtn").onclick=()=>{const blob=new Blob([JSON.stringify(saveProject(),null,2)],{type:"application/json"});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=(saveProject().name.replace(/[^a-z0-9-_]/gi,"-")||"project")+".airproj";a.click();URL.revokeObjectURL(a.href);$("status").textContent="Project exported"};
+$("importBtn").onclick=()=>$("fileInput").click();$("fileInput").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const p=JSON.parse(await f.text());program=Array.isArray(p.blocks)?p.blocks:[];$("projectName").value=p.name||"Imported project";renderWorkspace();$("status").textContent="Project imported"}catch{$("status").textContent="Could not read this project file"}e.target.value=""};
+$("newProject").onclick=()=>{if(program.length&&!confirm("Start a new project? Your current blocks will be cleared."))return;program=[];$("projectName").value="My first project";renderWorkspace();$("status").textContent="New project ready"};
+$("clearBtn").onclick=()=>{program=[];renderWorkspace();$("status").textContent="Workspace cleared"};
+$("runBtn").onclick=()=>{const lines=program.map(b=>b.text);$("screenOutput").innerHTML=lines.length?lines.slice(0,5).map(x=>x.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]))).join("<br>"):"Program is empty."; $("status").textContent="Preview ran (visual prototype)"};
+$("stopBtn").onclick=()=>{$("screenOutput").textContent="Program stopped.";$("status").textContent="Stopped"};
+$("resetPreview").onclick=()=>{$("screenOutput").innerHTML="Your program<br>will appear here.";$("status").textContent="Preview reset"};
+renderCategories();renderPalette();renderWorkspace();
