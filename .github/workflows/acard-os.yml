@@ -1,0 +1,35 @@
+name: ACard OS firmware
+
+on:
+  push:
+    paths:
+      - "firmware/**"
+      - ".github/workflows/acard-os.yml"
+  pull_request:
+    paths:
+      - "firmware/**"
+      - ".github/workflows/acard-os.yml"
+  workflow_dispatch:
+
+jobs:
+  build-esp32s3:
+    runs-on: ubuntu-latest
+    container:
+      image: espressif/idf:v5.3.2
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build ACard OS for Cardputer ADV
+        working-directory: firmware
+        shell: bash
+        run: |
+          idf.py set-target esp32s3
+          idf.py build
+      - name: Upload firmware build
+        uses: actions/upload-artifact@v4
+        with:
+          name: acard-os-esp32s3-build
+          path: |
+            firmware/build/bootloader/bootloader.bin
+            firmware/build/partition_table/partition-table.bin
+            firmware/build/acard_os.bin
+          if-no-files-found: error
